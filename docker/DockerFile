@@ -1,0 +1,45 @@
+# Stage 1: Base image with common dependencies
+FROM nvidia/cuda:12.6.3-cudnn-devel-ubuntu22.04 AS base
+
+# Prevents prompts from packages asking for user input during installation
+ENV DEBIAN_FRONTEND=noninteractive
+# Prefer binary wheels over source distributions for faster pip installations
+ENV PIP_PREFER_BINARY=1
+# Ensures output from python is printed immediately to the terminal without buffering
+ENV PYTHONUNBUFFERED=1
+# Speed up some cmake builds
+ENV CMAKE_BUILD_PARALLEL_LEVEL=8
+
+# Install Python, git and other necessary tools
+RUN apt-get update --fix-missing && apt-get install -y \
+    git \
+    wget \
+    libgl1 \
+    libglib2.0-0 \
+    libsm6 \
+    libxext6 \
+    libxrender-dev \
+    libgl1-mesa-glx \
+    software-properties-common \
+    python3.10 \
+    python3.10-dev \
+    python3-pip
+
+# Set Python 3.10 as default
+RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.10 1 && \
+    update-alternatives --install /usr/bin/python python /usr/bin/python3.10 1
+
+# Upgrade pip
+RUN python3 -m pip install --upgrade pip
+
+# Clean up to reduce image size
+RUN apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/*
+
+# pip install geoopt
+RUN pip install geoopt
+
+# pip install pytorch with CUDA 12.1
+RUN pip install torch==2.5.1 torchvision==0.20.1 torchaudio==2.5.1 --index-url https://download.pytorch.org/whl/cu121
+
+# pip install torch3d from stable
+RUN pip install "git+https://github.com/facebookresearch/pytorch3d.git@stable"

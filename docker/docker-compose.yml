@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  gaussian-head:
+    build:
+      context: ..
+      dockerfile: docker/DockerFile
+    volumes:
+      - ../:/app
+    working_dir: /app
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ['0']
+              capabilities: [gpu]
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=0
+    network_mode: host
+    tty: true
+    stdin_open: true
+    command: >
+      bash -c "cd /app &&
+               pip install -r requirements.txt &&
+               pip install git+https://github.com/camenduru/simple-knn &&
+               tail -f /dev/null"
