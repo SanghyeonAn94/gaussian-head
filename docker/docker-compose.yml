@@ -16,7 +16,7 @@ services:
               device_ids: ['1']
               capabilities: [gpu]
     environment:
-      - NVIDIA_VISIBLE_DEVICES=0
+      - NVIDIA_VISIBLE_DEVICES=1
     network_mode: host
     tty: true
     stdin_open: true
