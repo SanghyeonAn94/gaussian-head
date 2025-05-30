@@ -13,7 +13,7 @@ services:
         reservations:
           devices:
             - driver: nvidia
-              device_ids: ['0']
+              device_ids: ['1']
               capabilities: [gpu]
     environment:
       - NVIDIA_VISIBLE_DEVICES=0
@@ -22,6 +22,5 @@ services:
     stdin_open: true
     command: >
       bash -c "cd /app &&
-               pip install -r requirements.txt &&
-               pip install git+https://github.com/camenduru/simple-knn &&
+               chmod +x docker/.install.sh &&
                tail -f /dev/null"

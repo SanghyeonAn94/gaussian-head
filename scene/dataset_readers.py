@@ -142,7 +142,7 @@ def readNerfBlendShapeCameras(path, is_eval, is_debug, novel_view, only_head):
         image_path = os.path.join(path, "ori_imgs", str(image_id)+'.jpg')
         image = np.array(Image.open(image_path))
         if not only_head:
-            mask_path = os.path.join(path, "mask", str(image_id+1)+'.png')
+            mask_path = os.path.join(path, "mask", str(image_id)+'.png')
             seg = cv.imread(mask_path, cv.IMREAD_GRAYSCALE)  
             # Reference MODNet colab implementation
             mask = np.repeat(np.asarray(seg)[:,:,None], 3, axis=2) / 255

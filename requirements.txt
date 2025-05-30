@@ -8,4 +8,6 @@ scipy
 dearpygui
 lpips
 matplotlib
-
+face-alignment
+chumpy
+numpy==1.19.5

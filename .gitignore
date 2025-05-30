@@ -1,8 +1,12 @@
+*.pyc
 
 !data/
 !pretrained/
+!output/
 !data/.gitkeep
 !pretrained/.gitkeep
+!output/.gitkeep
 
 data/*
 pretrained/*
+output/*
